@@ -51,11 +51,12 @@ for f in files:
             if cell.value:
                 dims[cell.column] = max((dims.get(cell.column, 0), len(str(cell.value))))
     for col, value in dims.items():
-        sheet.column_dimensions[col].width = value + 2
+        col_ = chr(col + 64)      # Работает после openpyxl 2.6-a1 версии. При более старой версии эту строчку нужно закомментить. Также не работает для столбцов с названием 'A1', 'A2', и т.д.
+        sheet.column_dimensions[col_].width = value + 2      # Если версия openpyxl < 2.6-a1, то вместо "col_" нужно вписать "col"
     sheet.merge_cells('A1:D1')
     fn = "classes/" + classname + ".xlsx"
     xl.save(fn)
     xl.close()
 
 print("Классы успешно сохранены в папке classes/")
-input("Нажми Enter, епта")
+input("Нажми Enter")
